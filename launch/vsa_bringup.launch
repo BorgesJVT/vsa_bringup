@@ -1,0 +1,7 @@
+<launch>
+    <!-- <node pkg="navigation" exec="navigation_node" name="navigation_node" namespace="" output="screen">
+    </node> -->
+    <include file="$(find-pkg-share duro_gps_driver)/launch/bringup_duro_gps.launch" />
+    <include file="$(find-pkg-share primus_imu_driver)/launch/bringup_primus_imu.launch" />
+    <include file="$(find-pkg-share rosbridge_server)/launch/rosbridge_websocket_launch.xml" />
+</launch>
