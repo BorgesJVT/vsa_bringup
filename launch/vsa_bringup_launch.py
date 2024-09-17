@@ -48,21 +48,35 @@ def generate_launch_description():
         ]))
     )
     
+    # Execute bash command 'ros2 run navigator'
+    navigator_node = ExecuteProcess(
+        cmd=['ros2', 'run', 'navigator', 'navigator_node'],
+        output='screen'
+    )
+    
     # Record bag
+    # bag_recorder = ExecuteProcess(
+    #     cmd=['ros2', 'bag', 'record', \
+    #          '/tf',                   \
+    #          '/primus/imu',           \
+    #          '/duro/gps',             \
+    #          '/duro/heading',         \
+    #          '/duro/n_sats',          \
+    #          '/duro/current_pose',    \
+    #          '/nucleus_node/ahrs_packets', \
+    #          '/nucleus_node/altimeter_packets', \
+    #          '/nucleus_node/bottom_track_packets', \
+    #          '/nucleus_node/field_calibration_packets', \
+    #          '/nucleus_node/imu_packets', \
+    #          '/nucleus_node/water_track_packets', \
+    #          '/vehicle_state', \
+    #          '/vehicle_state_navsatfix', \
+    #          '/gps_in_meters'],
+    #     output='screen'
+    # )
+
     bag_recorder = ExecuteProcess(
-        cmd=['ros2', 'bag', 'record', \
-             '/tf',                   \
-             '/primus/imu',           \
-             '/duro/gps',             \
-             '/duro/heading',         \
-             '/duro/n_sats',          \
-             '/duro/current_pose',    \
-             '/nucleus_node/ahrs_packets', \
-             '/nucleus_node/altimeter_packets', \
-             '/nucleus_node/bottom_track_packets', \
-             '/nucleus_node/field_calibration_packets', \
-             '/nucleus_node/imu_packets', \
-             '/nucleus_node/water_track_packets'],
+        cmd=['ros2', 'bag', 'record', '-a'],
         output='screen'
     )
 
@@ -89,7 +103,11 @@ def generate_launch_description():
             primus_imu_launch,
         ]),
         
-        TimerAction(period=15.0, actions=[
+        TimerAction(period=20.0, actions=[
+            navigator_node,
+        ]),
+        
+        TimerAction(period=30.0, actions=[
             bag_recorder,
         ]),
     ])
